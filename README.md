@@ -1,3 +1,18 @@
+# zhfix fork
+
+new 1.7+ version's app chooser layout looks very wired, and I don't need touch and multi-rows support, so I:
+
+- backport some new version changes to 1.6
+- fix broken chinese support
+- little ui adjust
+- Fix extra `//` on non-hierarchical URI that broken apps (e.g. `help:gnome-help/disk`)
+
+for the last change I have to disable dbus activation support for `open` method, shouldn't be problematic.
+
+aur link: https://aur.archlinux.org/packages/junction-zhfix
+
+---
+
 <img style="vertical-align: middle;" src="data/icons/re.sonny.Junction.svg" width="120" height="120" align="left">
 
 # Junction
@@ -6,7 +21,7 @@ Junction lets you choose the application to open files and links.
 
 ![screenshot](data/screenshot.png)
 
-<a href='https://flathub.org/apps/details/re.sonny.Junction'><img width='180' height='60' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.svg'/></a>
+<a href='https://flathub.org/apps/re.sonny.Junction'><img width='240' height='80' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.svg'/></a>
 
 ## Usage
 
@@ -192,6 +207,8 @@ If the application was installed via Flatpak, the package manager or an other co
 
 Make sure the application desktop file has a `MimeType` key that matches the type of resource you want it to handle. For example if you want the application `~/.local/share/applications/my-custom-browser.desktop` to handle web content; add the following `MimeType=text/html;text/xml;application/xhtml+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;`.
 
+The `[Desktop Entry]` of the `.desktop` file must be the first section as mandated by the specification.
+
 The desktop filename should be unique. Junction can't display both `/usr/share/applicatins/firefox.desktop` and `~/.local/share/applications/firefox.desktop`. The second overrides the first.
 
 Finally - make sure to run `update-desktop-database ~/.local/share/applications` after installing a desktop file.
@@ -232,6 +249,7 @@ Thank you for your help!
 ## Development
 
 ```sh
+git clone --recursive https://github.com/sonnyp/Junction.git
 cd Junction
 npm install
 make dev
@@ -267,7 +285,7 @@ make test
 <details>
   <summary>Bookmarks</summary>
 
-- [Flathub](https://flathub.org/apps/details/re.sonny.Junction)
+- [Flathub](https://flathub.org/apps/re.sonny.Junction)
 - [Flathub repo](https://github.com/flathub/re.sonny.Junction)
 - [Flathub builds](https://flathub.org/builds/#/apps/re.sonny.Junction)
 - [Flathub stats](https://klausenbusk.github.io/flathub-stats/#ref=re.sonny.Junction)
@@ -311,6 +329,8 @@ See https://github.com/sonnyp/Commit/pull/14#issuecomment-894070878
 - flathub
 
 </details>
+
+<!--
 
 ## Building
 
@@ -379,9 +399,11 @@ ninja -C build uninstall
 
 </details>
 
+-->
+
 ## Copyright
 
-© 2021-2022 [Sonny Piers](https://github.com/sonnyp)
+© 2021 [Sonny Piers](https://github.com/sonnyp)
 
 ## License
 
