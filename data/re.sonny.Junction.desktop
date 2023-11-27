@@ -10,5 +10,5 @@ Categories=Settings;System;Utility;GNOME;GTK;
 Icon=re.sonny.Junction
 # TRANSLATORS: Do NOT translate
 Keywords=Choosy;BrowserChooser;Braus;Browserosaurus;Finicky;Buffet;OpenIn;BrowserSelect;
-DBusActivatable=true
+DBusActivatable=false
 StartupNotify=true

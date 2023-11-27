@@ -1,8 +1,6 @@
 import Gtk from "gi://Gtk";
-import Gio from "gi://Gio";
-import Gdk from "gi://Gdk";
 
-import { spawn_sync } from "./util.js";
+import { spawn_sync, spawn } from "./util.js";
 import Interface from "./welcome.blp";
 
 export default function Welcome({ application }) {
@@ -14,19 +12,14 @@ export default function Welcome({ application }) {
 
   const test_button = builder.get_object("demo_button");
   test_button.connect("activate-link", () => {
-    application.open([Gio.File.new_for_uri(test_button.uri)], "demo");
+    spawn(`xdg-open ${test_button.uri}`)
     return true;
   });
 
   const install_button = builder.get_object("install_button");
   install_button.connect("clicked", () => {
     const success = setAsDefaultApplicationForWeb();
-
-    Gtk.show_uri(
-      window,
-      `https://junction.sonny.re/${success ? "success" : "error"}`,
-      Gdk.CURRENT_TIME,
-    );
+    spawn(`xdg-open https://junction.sonny.re/${success ? "success" : "error"}`)
   });
 
   window.present();

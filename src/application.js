@@ -31,13 +31,19 @@ export default function Application() {
 
   application.connect("command-line", (self, argObject, hint) => {
     const args = argObject.get_arguments();
-    args.forEach(arg => {
-      if (arg === args[0]) return
-      Window({
+    if (args[1] === undefined) {
+      Welcome({
         application,
-        arg,
       });
-    });
+    } else {
+      args.forEach(arg => {
+        if (arg === args[0]) return
+        Window({
+          application,
+          arg,
+        });
+      });
+    }
   });
 
   application.connect("activate", () => {
