@@ -126,7 +126,6 @@ const excluded_apps = [
 
 function getApplications(content_type) {
   const applications = Gio.AppInfo.get_recommended_for_type(content_type);
-
   return applications.filter((appInfo) => {
     return !excluded_apps.includes(appInfo.get_id());
   });
