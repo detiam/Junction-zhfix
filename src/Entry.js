@@ -4,7 +4,7 @@ import GLib from "gi://GLib";
 import { gettext as _ } from "gettext";
 
 export default function Entry({ entry, resource, scheme }) {
-  entry.set_text(resource);
+  entry.set_text(decodeURI(resource)); // for non-ascii characters
 
   if (scheme === "file") {
     entry.set_editable(false);
