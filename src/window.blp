@@ -4,23 +4,50 @@ using Adw 1;
 Adw.ApplicationWindow window {
   resizable: false;
   decorated: false;
-  content:
-  WindowHandle {
 
+  styles [
+    "main",
+  ]
+
+  content: WindowHandle {
     Box {
       orientation: vertical;
 
-      Box list {
-        styles [
-          "list",
-        ]
+      styles [
+        "content",
+      ]
 
+      Box list {
         orientation: horizontal;
         homogeneous: true;
         spacing: 12;
+
+        styles [
+          "list",
+        ]
       }
 
       Box {
+        spacing: 8;
+
+        styles [
+          "bar",
+        ]
+
+        MenuButton menu_button {
+          icon-name: "open-menu-symbolic";
+          popover: menu_popover;
+          halign: center;
+          valign: center;
+          primary: true;
+          tooltip-text: _("Main Menu");
+
+          styles [
+            "circular",
+            "flat",
+          ]
+        }
+
         Entry entry {
           hexpand: true;
           input-purpose: url;
@@ -31,12 +58,11 @@ Adw.ApplicationWindow window {
           ]
         }
 
-        MenuButton menu_button {
-          popover: menu_popover;
-          icon-name: "open-menu-symbolic";
-          margin-start: 6;
+        Button {
+          icon-name: "window-close-symbolic";
+          action-name: "window.close";
+          halign: center;
           valign: center;
-          tooltip-text: _("Main Menu");
 
           styles [
             "circular",
@@ -44,23 +70,13 @@ Adw.ApplicationWindow window {
           ]
         }
       }
-
-      styles [
-        "content",
-      ]
     }
-  }
-
-  ;
-
-  styles [
-    "main",
-  ]
+  };
 }
 
 PopoverMenu menu_popover {
   menu-model: menu_model;
-  halign: end;
+  halign: center;
 }
 
 menu menu_model {
