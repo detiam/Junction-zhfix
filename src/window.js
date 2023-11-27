@@ -9,14 +9,14 @@ import AppButton, { ViewAllButton, RevealInFolderButton } from "./AppButton.js";
 import { settings } from "./common.js";
 import Interface from "./window.blp";
 
-export default function Window({ application, file }) {
+export default function Window({ application, arg }) {
   const builder = Gtk.Builder.new_from_resource(Interface);
 
   const window = builder.get_object("window");
   if (__DEV__) window.add_css_class("devel");
   window.set_application(application);
 
-  const { content_type, resource, scheme } = readResource(file);
+  const { resource, scheme, content_type } = readResource(arg);
 
   const { entry } = Entry({
     entry: builder.get_object("entry"),
@@ -52,8 +52,7 @@ export default function Window({ application, file }) {
   ) {
     list.append(
       RevealInFolderButton({
-        file,
-        entry,
+        resource,
         window,
       }),
     );

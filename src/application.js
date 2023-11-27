@@ -13,7 +13,7 @@ import "./style.css";
 export default function Application() {
   const application = new Adw.Application({
     application_id: "re.sonny.Junction",
-    flags: Gio.ApplicationFlags.HANDLES_OPEN,
+    flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
   });
 
   // https://gitlab.gnome.org/GNOME/glib/-/issues/1960
@@ -29,21 +29,13 @@ export default function Application() {
 
   Adw.StyleManager.get_default().set_color_scheme(Adw.ColorScheme.FORCE_DARK);
 
-  // FIXME: Cannot deal with mailto:, xmpp:, ... URIs
-  // GFile mess the URI if the scheme separator does not include "//" like about:blank or mailto:foo@bar.com
-  // or plenty of other URI schemes https://en.wikipedia.org/wiki/List_of_URI_schemes
-  // would be neat if there was a HANDLES_URI ApplicationFlags that used the new GLib URI
-  // see https://gitlab.gnome.org/GNOME/glib/-/issues/1886
-  // I tried working around the problem by using ApplicationFlags.COMMAND_LINE only
-  // but the only way never to trigger open is to disable DBus activation altogether
-  // see also https://gitlab.gnome.org/GNOME/glib/-/issues/1853
-  application.connect("open", (self, files, hint) => {
-    // log(["open", files.length, hint]);
-
-    files.forEach((file) => {
+  application.connect("command-line", (self, argObject, hint) => {
+    const args = argObject.get_arguments();
+    args.forEach(arg => {
+      if (arg === args[0]) return
       Window({
         application,
-        file,
+        arg,
       });
     });
   });

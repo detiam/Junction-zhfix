@@ -139,14 +139,14 @@ export default function AppButton({ appInfo, content_type, entry, window }) {
   return button;
 }
 
-export function RevealInFolderButton({ file, window }) {
+export function RevealInFolderButton({ resource, window }) {
   function onClicked() {
     promiseTask(
       portal,
       "open_directory",
       "open_directory_finish",
       imports.gi.XdpGtk4.parent_new_gtk(window),
-      file.get_uri(),
+      resource,
       Xdp.OpenUriFlags.NONE,
       null,
     )

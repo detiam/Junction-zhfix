@@ -87,36 +87,31 @@ export function getFlatpakInfo() {
   return keyFile;
 }
 
-export function readResource(file) {
-  if (file.has_uri_scheme("x-junction")) {
-    const uri = file
-      .get_uri()
-      .split("x-junction://")[1]
-      .replace("file:0//", "file:///")
-      .replace(":0//", "://");
-    if (uri.startsWith("~/")) {
-      file = Gio.File.parse_name(uri);
-    } else {
-      file = Gio.File.new_for_commandline_arg(uri);
-    }
-  }
+export function readResource(arg) {
+  if (arg.startsWith("x-junction://"))
+    arg = arg.split("x-junction://")[1]
+  if (arg.startsWith("file://"))
+    arg = arg.split("file://")[1]
+  if (arg.startsWith("~"))
+    arg = Gio.File.parse_name(arg).get_parse_name()
 
+  const file = Gio.File.new_for_commandline_arg(arg);
+
+  let resource = arg;
+  let scheme = file.get_uri_scheme();
   let content_type = "application/octet-stream";
-  let resource = file.get_parse_name();
-  if (isDocumentPortalExportedFile(resource)) {
-    resource = getRealPath(resource) || resource;
-  }
-
-  // g_file_get_uri_scheme() returns http for https so we need to use g_uri
-  // g_file_get_parse_name() does not so it may be a bug
-  // const scheme = file.get_uri_scheme();
-  // console.log(file.get_uri_scheme())
-  const uri = GLib.uri_parse(file.get_uri(), GLib.UriFlags.NONE);
-  const scheme = uri.get_scheme();
 
   if (scheme !== "file") {
+    // g_file_get_uri_scheme() returns http for https so we need to use g_uri
+    // g_file_get_parse_name() does not so it may be a bug
+    scheme = GLib.uri_parse(resource, GLib.UriFlags.NONE).get_scheme();
+
     content_type = `x-scheme-handler/${scheme}`;
   } else {
+    resource = file.get_uri();
+    if (isDocumentPortalExportedFile(resource))
+      resource = getRealPath(resource) || resource;
+
     try {
       const info = file.query_info(
         "standard::content-type",
