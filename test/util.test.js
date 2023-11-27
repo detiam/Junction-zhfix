@@ -1,6 +1,5 @@
 import "gi://Gtk?version=4.0";
 import GLib from "gi://GLib";
-import Gio from "gi://Gio";
 
 import tst, { assert } from "../troll/tst/tst.js";
 
@@ -29,7 +28,7 @@ test("parse", () => {
 
 test("readResource", () => {
   function read(str) {
-    return readResource(Gio.File.new_for_commandline_arg(str));
+    return readResource(str);
   }
 
   assert.equal(read("/"), {

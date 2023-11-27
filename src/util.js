@@ -108,7 +108,7 @@ export function readResource(arg) {
 
     content_type = `x-scheme-handler/${scheme}`;
   } else {
-    resource = file.get_uri();
+    resource = file.get_parse_name();
     if (isDocumentPortalExportedFile(resource))
       resource = getRealPath(resource) || resource;
 

@@ -52,7 +52,7 @@ export default function Window({ application, arg }) {
   ) {
     list.append(
       RevealInFolderButton({
-        resource,
+        resource: "file://" + resource,
         window,
       }),
     );
